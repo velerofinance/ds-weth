@@ -2,7 +2,6 @@ pragma solidity >=0.4.23;
 
 import "ds-test/test.sol";
 
-import "./weth.sol";
 import "./weth9.sol";
 
 contract WETH9 is WETH9_ {
@@ -14,7 +13,7 @@ contract WETH9 is WETH9_ {
     }
 }
 
-contract WETH9Test is DSTest, WETHEvents {
+contract WETH9Test is DSTest {
     WETH9  weth;
     Guy   a;
     Guy   b;
@@ -170,26 +169,22 @@ contract WETH9Test is DSTest, WETHEvents {
     }
 
     function perform_join(Guy guy, uint wad) public {
-        emit Join(address(guy), wad);
-        guy.join.value(wad)();
+        guy.join{value: wad}();
     }
 
     function perform_exit(Guy guy, uint wad) public {
-        emit Exit(address(guy), wad);
         guy.exit(wad);
     }
 
     function perform_transfer(
         Guy src, uint wad, Guy dst
     ) public {
-        emit Transfer(address(src), address(dst), wad);
         src.transfer(dst, wad);
     }
 
     function perform_approval(
         Guy src, uint wad, Guy guy
     ) public {
-        emit Approval(address(src), address(guy), wad);
         src.approve(guy, wad);
     }
 
@@ -202,7 +197,6 @@ contract WETH9Test is DSTest, WETHEvents {
     function perform_transfer(
         Guy guy, uint wad, Guy src, Guy dst
     ) public {
-        emit Transfer(address(src), address(dst), wad);
         guy.transfer(src, dst, wad);
     }
 }
@@ -215,14 +209,14 @@ contract Guy {
     }
 
     function join() payable public {
-        weth.join.value(msg.value)();
+        weth.join{value: msg.value}();
     }
 
     function exit(uint wad) public {
         weth.exit(wad);
     }
 
-    function () external payable {
+    receive () external payable {
     }
 
     function transfer(Guy dst, uint wad) public {

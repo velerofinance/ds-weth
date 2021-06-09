@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pragma solidity >=0.4.23;
+pragma solidity >=0.6.0;
 
 contract WETH9_ {
     string public name     = "Wrapped Ether";
@@ -28,7 +28,7 @@ contract WETH9_ {
     mapping (address => uint)                       public  balanceOf;
     mapping (address => mapping (address => uint))  public  allowance;
 
-    function() external payable {
+    receive() external payable {
         deposit();
     }
     function deposit() public payable {
