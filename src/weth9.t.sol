@@ -5,7 +5,7 @@ import "ds-test/test.sol";
 import "./weth.sol";
 import "./weth9.sol";
 
-contract WETH9 is WETH9_ {
+contract WVLX9 is WVLX9_ {
     function join() public payable {
         deposit();
     }
@@ -14,57 +14,57 @@ contract WETH9 is WETH9_ {
     }
 }
 
-contract WETH9Test is DSTest, WETHEvents {
-    WETH9  weth;
+contract WVLX9Test is DSTest, WVLXEvents {
+    WVLX9  wvlx;
     Guy   a;
     Guy   b;
     Guy   c;
 
     function setUp() public {
-        weth  = this.newWETH();
+        wvlx  = this.newWVLX();
         a     = this.newGuy();
         b     = this.newGuy();
         c     = this.newGuy();
     }
 
-    function newWETH() public returns (WETH9) {
-        return new WETH9();
+    function newWVLX() public returns (WVLX9) {
+        return new WVLX9();
     }
 
     function newGuy() public returns (Guy) {
-        return new Guy(weth);
+        return new Guy(wvlx);
     }
 
     function test_initial_state() public {
-        assert_eth_balance   (a, 0 finney);
-        assert_weth_balance  (a, 0 finney);
-        assert_eth_balance   (b, 0 finney);
-        assert_weth_balance  (b, 0 finney);
-        assert_eth_balance   (c, 0 finney);
-        assert_weth_balance  (c, 0 finney);
+        assert_vlx_balance(a, 0 finney);
+        assert_wvlx_balance(a, 0 finney);
+        assert_vlx_balance(b, 0 finney);
+        assert_wvlx_balance(b, 0 finney);
+        assert_vlx_balance(c, 0 finney);
+        assert_wvlx_balance(c, 0 finney);
 
-        assert_weth_supply   (0 finney);
+        assert_wvlx_supply(0 finney);
     }
 
     function test_join() public {
-        // expectEventsExact    (address(weth));
+        // expectEventsExact    (address(wvlx));
 
         perform_join         (a, 3 finney);
-        assert_weth_balance  (a, 3 finney);
-        assert_weth_balance  (b, 0 finney);
-        assert_eth_balance   (a, 0 finney);
-        assert_weth_supply   (3 finney);
+        assert_wvlx_balance(a, 3 finney);
+        assert_wvlx_balance(b, 0 finney);
+        assert_vlx_balance(a, 0 finney);
+        assert_wvlx_supply(3 finney);
 
         perform_join         (a, 4 finney);
-        assert_weth_balance  (a, 7 finney);
-        assert_weth_balance  (b, 0 finney);
-        assert_eth_balance   (a, 0 finney);
-        assert_weth_supply   (7 finney);
+        assert_wvlx_balance(a, 7 finney);
+        assert_wvlx_balance(b, 0 finney);
+        assert_vlx_balance(a, 0 finney);
+        assert_wvlx_supply(7 finney);
 
         perform_join         (b, 5 finney);
-        assert_weth_balance  (b, 5 finney);
-        assert_weth_balance  (a, 7 finney);
-        assert_weth_supply   (12 finney);
+        assert_wvlx_balance(b, 5 finney);
+        assert_wvlx_balance(a, 7 finney);
+        assert_wvlx_supply(12 finney);
     }
 
     function testFail_exital_1() public {
@@ -84,19 +84,19 @@ contract WETH9Test is DSTest, WETHEvents {
     }
 
     function test_exit() public {
-        // expectEventsExact    (address(weth));
+        // expectEventsExact    (address(wvlx));
 
         perform_join         (a, 7 finney);
-        assert_weth_balance  (a, 7 finney);
-        assert_eth_balance   (a, 0 finney);
+        assert_wvlx_balance(a, 7 finney);
+        assert_vlx_balance(a, 0 finney);
 
         perform_exit         (a, 3 finney);
-        assert_weth_balance  (a, 4 finney);
-        assert_eth_balance   (a, 3 finney);
+        assert_wvlx_balance(a, 4 finney);
+        assert_vlx_balance(a, 3 finney);
 
         perform_exit         (a, 4 finney);
-        assert_weth_balance  (a, 0 finney);
-        assert_eth_balance   (a, 7 finney);
+        assert_wvlx_balance(a, 0 finney);
+        assert_vlx_balance(a, 7 finney);
     }
 
     function testFail_transfer_1() public {
@@ -110,13 +110,13 @@ contract WETH9Test is DSTest, WETHEvents {
     }
 
     function test_transfer() public {
-        // expectEventsExact    (address(weth));
+        // expectEventsExact    (address(wvlx));
 
         perform_join         (a, 7 finney);
         perform_transfer     (a, 3 finney, b);
-        assert_weth_balance  (a, 4 finney);
-        assert_weth_balance  (b, 3 finney);
-        assert_weth_supply   (7 finney);
+        assert_wvlx_balance(a, 4 finney);
+        assert_wvlx_balance(b, 3 finney);
+        assert_wvlx_supply(7 finney);
     }
 
     function testFail_transferFrom_1() public {
@@ -134,39 +134,39 @@ contract WETH9Test is DSTest, WETHEvents {
 
         perform_join         (a, 7 finney);
         perform_approval     (a, 5 finney, b);
-        assert_weth_balance  (a, 7 finney);
+        assert_wvlx_balance(a, 7 finney);
         assert_allowance     (b, 5 finney, a);
-        assert_weth_supply   (7 finney);
+        assert_wvlx_supply(7 finney);
 
         perform_transfer     (b, 3 finney, a, c);
-        assert_weth_balance  (a, 4 finney);
-        assert_weth_balance  (b, 0 finney);
-        assert_weth_balance  (c, 3 finney);
+        assert_wvlx_balance(a, 4 finney);
+        assert_wvlx_balance(b, 0 finney);
+        assert_wvlx_balance(c, 3 finney);
         assert_allowance     (b, 2 finney, a);
-        assert_weth_supply   (7 finney);
+        assert_wvlx_supply(7 finney);
 
         perform_transfer     (b, 2 finney, a, c);
-        assert_weth_balance  (a, 2 finney);
-        assert_weth_balance  (b, 0 finney);
-        assert_weth_balance  (c, 5 finney);
+        assert_wvlx_balance(a, 2 finney);
+        assert_wvlx_balance(b, 0 finney);
+        assert_wvlx_balance(c, 5 finney);
         assert_allowance     (b, 0 finney, a);
-        assert_weth_supply   (7 finney);
+        assert_wvlx_supply(7 finney);
     }
 
     //------------------------------------------------------------------
     // Helper functions
     //------------------------------------------------------------------
 
-    function assert_eth_balance(Guy guy, uint balance) public {
+    function assert_vlx_balance(Guy guy, uint balance) public {
         assertEq(address(guy).balance, balance);
     }
 
-    function assert_weth_balance(Guy guy, uint balance) public {
-        assertEq(weth.balanceOf(address(guy)), balance);
+    function assert_wvlx_balance(Guy guy, uint balance) public {
+        assertEq(wvlx.balanceOf(address(guy)), balance);
     }
 
-    function assert_weth_supply(uint supply) public {
-        assertEq(weth.totalSupply(), supply);
+    function assert_wvlx_supply(uint supply) public {
+        assertEq(wvlx.totalSupply(), supply);
     }
 
     function perform_join(Guy guy, uint wad) public {
@@ -196,7 +196,7 @@ contract WETH9Test is DSTest, WETHEvents {
     function assert_allowance(
         Guy guy, uint wad, Guy src
     ) public {
-        assertEq(weth.allowance(address(src), address(guy)), wad);
+        assertEq(wvlx.allowance(address(src), address(guy)), wad);
     }
 
     function perform_transfer(
@@ -208,32 +208,32 @@ contract WETH9Test is DSTest, WETHEvents {
 }
 
 contract Guy {
-    WETH9 weth;
+    WVLX9 wvlx;
 
-    constructor(WETH9 _weth) public {
-        weth = _weth;
+    constructor(WVLX9 _wvlx) public {
+        wvlx = _wvlx;
     }
 
     function join() payable public {
-        weth.join.value(msg.value)();
+        wvlx.join.value(msg.value)();
     }
 
     function exit(uint wad) public {
-        weth.exit(wad);
+        wvlx.exit(wad);
     }
 
     function () external payable {
     }
 
     function transfer(Guy dst, uint wad) public {
-        require(weth.transfer(address(dst), wad));
+        require(wvlx.transfer(address(dst), wad));
     }
 
     function approve(Guy guy, uint wad) public {
-        require(weth.approve(address(guy), wad));
+        require(wvlx.approve(address(guy), wad));
     }
 
     function transfer(Guy src, Guy dst, uint wad) public {
-        require(weth.transferFrom(address(src), address(dst), wad));
+        require(wvlx.transferFrom(address(src), address(dst), wad));
     }
 }
